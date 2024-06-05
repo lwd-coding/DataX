@@ -17,10 +17,7 @@
                         "username": "root",
                         "password": "awdhudg2177123@@q",
                         "column": [
-                            "cid",
-                            "cname",
-							"user_id",
-							"cstatus"
+                            "*"
                         ],
                         "splitPk": "cid",
                         "connection": [
@@ -36,17 +33,14 @@
                  "writer": {
                     "name": "mysqlwriter",
                     "parameter": {
-                        "writeMode": "insert",
+                        "writeMode": "update",
+                        "ignoreUpdateFieldsOnUpdateMode": ["user_id"],
                         "username": "root",
                         "password": "root",
                         "column": [
-                           "cid",
-                           "cname",
-							"user_id",
-							"cstatus"
+                            "*"
                         ],
                         "preSql": [
-                            "delete from course"
                         ],
                         "connection": [
                             {

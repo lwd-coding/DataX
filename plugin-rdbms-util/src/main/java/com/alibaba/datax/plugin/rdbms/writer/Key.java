@@ -16,6 +16,9 @@ public final class Key {
     //可选值为：insert,replace，默认为 insert （mysql 支持，oracle 没用 replace 机制，只能 insert,oracle 可以不暴露这个参数）
     public final static String WRITE_MODE = "writeMode";
 
+    //WRITE_MODE为update时，在ON_Duplicate后需要忽略更新的字段
+    public final static String IGNORE_UPDATE_FIELDS_ON_UPDATE_MODE= "ignoreUpdateFieldsOnUpdateMode";
+
     public final static String PRE_SQL = "preSql";
 
     public final static String POST_SQL = "postSql";

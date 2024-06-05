@@ -15,7 +15,10 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.Statement;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public final class WriterUtil {
     private static final Logger LOG = LoggerFactory.getLogger(WriterUtil.class);
@@ -108,7 +111,7 @@ public final class WriterUtil {
         }
     }
 
-    public static String getWriteTemplate(List<String> columnHolders, List<String> valueHolders, String writeMode, DataBaseType dataBaseType, boolean forceUseUpdate) {
+    public static String getWriteTemplate(List<String> columnHolders,List<String> ignoreFieldsOnDuplicate, List<String> valueHolders, String writeMode, DataBaseType dataBaseType, boolean forceUseUpdate) {
         boolean isWriteModeLegal = writeMode.trim().toLowerCase().startsWith("insert")
                 || writeMode.trim().toLowerCase().startsWith("replace")
                 || writeMode.trim().toLowerCase().startsWith("update");
@@ -123,12 +126,16 @@ public final class WriterUtil {
                 ((dataBaseType == DataBaseType.MySql || dataBaseType == DataBaseType.Tddl) && writeMode.trim().toLowerCase().startsWith("update"))
                 ) {
             //update只在mysql下使用
+            List<String> onDuplicateColumnHolders = columnHolders;
+            if (ignoreFieldsOnDuplicate != null && !ignoreFieldsOnDuplicate.isEmpty()) {
+                onDuplicateColumnHolders = onDuplicateColumnHolders.stream().filter((f) -> !ignoreFieldsOnDuplicate.contains(f)).collect(Collectors.toList());
+            }
 
             writeDataSqlTemplate = new StringBuilder()
                     .append("INSERT INTO %s (").append(StringUtils.join(columnHolders, ","))
                     .append(") VALUES(").append(StringUtils.join(valueHolders, ","))
                     .append(")")
-                    .append(onDuplicateKeyUpdateString(columnHolders))
+                    .append(onDuplicateKeyUpdateString(onDuplicateColumnHolders))
                     .toString();
         } else {
 

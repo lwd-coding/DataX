@@ -166,8 +166,9 @@ public final class OriginalConfPretreatmentUtil {
         if (dataBaseType == DataBaseType.MySql && isOB10(jdbcUrl)) {
             forceUseUpdate = true;
         }
+        List<String> ignoreUpdateFieldsOnUpdateMode = originalConfig.getList(Key.IGNORE_UPDATE_FIELDS_ON_UPDATE_MODE, String.class);
 
-        String writeDataSqlTemplate = WriterUtil.getWriteTemplate(columns, valueHolders, writeMode,dataBaseType, forceUseUpdate);
+        String writeDataSqlTemplate = WriterUtil.getWriteTemplate(columns, ignoreUpdateFieldsOnUpdateMode, valueHolders, writeMode, dataBaseType, forceUseUpdate);
 
         LOG.info("Write data [\n{}\n], which jdbcUrl like:[{}]", writeDataSqlTemplate, jdbcUrl);
 

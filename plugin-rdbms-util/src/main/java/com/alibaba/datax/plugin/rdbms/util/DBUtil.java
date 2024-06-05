@@ -515,6 +515,7 @@ public final class DBUtil {
         String queryColumnSql = null;
         try {
             statement = conn.createStatement();
+            //where 1=2 控制不会返回数据
             queryColumnSql = String.format("select * from %s where 1=2",
                     tableName);
             rs = statement.executeQuery(queryColumnSql);

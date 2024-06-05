@@ -26,6 +26,7 @@ public class MysqlWriter extends Writer {
 
         @Override
         public void init() {
+            //获取插件配置
             this.originalConfig = super.getPluginJobConf();
             this.commonRdbmsWriterJob = new CommonRdbmsWriter.Job(DATABASE_TYPE);
             this.commonRdbmsWriterJob.init(this.originalConfig);

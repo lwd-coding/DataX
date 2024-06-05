@@ -194,6 +194,7 @@ public class CommonRdbmsWriter {
         protected static String BASIC_MESSAGE;
 
         protected static String INSERT_OR_REPLACE_TEMPLATE;
+        protected List<String> ignoreUpdateFieldsOnUpdateMode;
 
         protected String writeRecordSql;
         protected String writeMode;
@@ -239,6 +240,8 @@ public class CommonRdbmsWriter {
             writeMode = writerSliceConfig.getString(Key.WRITE_MODE, "INSERT");
             emptyAsNull = writerSliceConfig.getBool(Key.EMPTY_AS_NULL, true);
             INSERT_OR_REPLACE_TEMPLATE = writerSliceConfig.getString(Constant.INSERT_OR_REPLACE_TEMPLATE_MARK);
+
+            ignoreUpdateFieldsOnUpdateMode = writerSliceConfig.getList(Key.IGNORE_UPDATE_FIELDS_ON_UPDATE_MODE, String.class);
             this.writeRecordSql = String.format(INSERT_OR_REPLACE_TEMPLATE, this.table);
 
             BASIC_MESSAGE = String.format("jdbcUrl:[%s], table:[%s]",
@@ -573,7 +576,7 @@ public class CommonRdbmsWriter {
                     forceUseUpdate = true;
                 }
 
-                INSERT_OR_REPLACE_TEMPLATE = WriterUtil.getWriteTemplate(columns, valueHolders, writeMode, dataBaseType, forceUseUpdate);
+                INSERT_OR_REPLACE_TEMPLATE = WriterUtil.getWriteTemplate(columns, ignoreUpdateFieldsOnUpdateMode, valueHolders, writeMode, dataBaseType, forceUseUpdate);
                 writeRecordSql = String.format(INSERT_OR_REPLACE_TEMPLATE, this.table);
             }
         }
