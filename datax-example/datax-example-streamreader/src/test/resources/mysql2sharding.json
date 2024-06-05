@@ -1,0 +1,64 @@
+{
+    "job": {
+        "setting": {
+            "speed": {
+                 "channel": 3
+            },
+            "errorLimit": {
+                "record": 0,
+                "percentage": 0.02
+            }
+        },
+        "content": [
+            {
+                "reader": {
+                    "name": "mysqlreader",
+                    "parameter": {
+                        "username": "root",
+                        "password": "awdhudg2177123@@q",
+                        "column": [
+                            "cid",
+                            "cname",
+							"user_id",
+							"cstatus"
+                        ],
+                        "splitPk": "cid",
+                        "connection": [
+                            {
+                                "table": [
+                                    "course"
+                                ],
+                                "jdbcUrl": [ "jdbc:mysql://101.42.7.233:11101/datax?serverTimezone=GMT%2B8"]
+                            }
+                        ]
+                    }
+                },
+                 "writer": {
+                    "name": "mysqlwriter",
+                    "parameter": {
+                        "writeMode": "insert",
+                        "username": "root",
+                        "password": "root",
+                        "column": [
+                           "cid",
+                           "cname",
+							"user_id",
+							"cstatus"
+                        ],
+                        "preSql": [
+                            "delete from course"
+                        ],
+                        "connection": [
+                            {
+                                "jdbcUrl": "jdbc:mysql://127.0.0.1:3308/helloworld?useSSL=true",
+                                "table": [
+                                    "course"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            }
+        ]
+    }
+}

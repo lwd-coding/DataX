@@ -50,7 +50,7 @@ public class Engine {
         boolean isJob = !("taskGroup".equalsIgnoreCase(allConf
                 .getString(CoreConstant.DATAX_CORE_CONTAINER_MODEL)));
         //JobContainer会在schedule后再行进行设置和调整值
-        int channelNumber =0;
+        int channelNumber = 0;
         AbstractContainer container;
         long instanceId;
         int taskGroupId = -1;
@@ -75,14 +75,14 @@ public class Engine {
         boolean perfReportEnable = allConf.getBool(CoreConstant.DATAX_CORE_REPORT_DATAX_PERFLOG, true);
 
         //standalone模式的 datax shell任务不进行汇报
-        if(instanceId == -1){
+        if (instanceId == -1) {
             perfReportEnable = false;
         }
 
         Configuration jobInfoConfig = allConf.getConfiguration(CoreConstant.DATAX_JOB_JOBINFO);
         //初始化PerfTrace
         PerfTrace perfTrace = PerfTrace.getInstance(isJob, instanceId, taskGroupId, traceEnable);
-        perfTrace.setJobInfo(jobInfoConfig,perfReportEnable,channelNumber);
+        perfTrace.setJobInfo(jobInfoConfig, perfReportEnable, channelNumber);
         container.start();
 
     }
@@ -96,12 +96,12 @@ public class Engine {
 
         filterSensitiveConfiguration(jobContent);
 
-        jobConfWithSetting.set("content",jobContent);
+        jobConfWithSetting.set("content", jobContent);
 
         return jobConfWithSetting.beautify();
     }
 
-    public static Configuration filterSensitiveConfiguration(Configuration configuration){
+    public static Configuration filterSensitiveConfiguration(Configuration configuration) {
         Set<String> keys = configuration.getKeys();
         for (final String key : keys) {
             boolean isSensitive = StringUtils.endsWithIgnoreCase(key, "password")
@@ -171,8 +171,8 @@ public class Engine {
 
     /**
      * -1 表示未能解析到 jobId
-     *
-     *  only for dsc & ds & datax 3 update
+     * <p>
+     * only for dsc & ds & datax 3 update
      */
     private static long parseJobIdFromUrl(List<String> patternStringList, String url) {
         long result = -1;
@@ -196,6 +196,13 @@ public class Engine {
     }
 
     public static void main(String[] args) throws Exception {
+        //com.alibaba.datax.core.Engine -mode standalone -jobid -1 -job /absolute/path/to/job/mysql2sharding.json
+        System.setProperty("datax.home", "D:\\2.soft\\2.server\\datax\\datax\\");
+        args = new String[]{
+                "-mode", "standalone",
+                "-jobid", "-1",
+                "-job", System.getProperty("datax.home") + "job/mysql2sharding.json"
+        };
         int exitCode = 0;
         try {
             Engine.entry(args);

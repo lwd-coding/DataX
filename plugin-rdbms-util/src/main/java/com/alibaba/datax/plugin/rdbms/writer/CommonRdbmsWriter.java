@@ -12,7 +12,6 @@ import com.alibaba.datax.plugin.rdbms.util.DataBaseType;
 import com.alibaba.datax.plugin.rdbms.util.RdbmsException;
 import com.alibaba.datax.plugin.rdbms.writer.util.OriginalConfPretreatmentUtil;
 import com.alibaba.datax.plugin.rdbms.writer.util.WriterUtil;
-import java.util.concurrent.atomic.AtomicLong;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Triple;
 import org.slf4j.Logger;
@@ -24,6 +23,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class CommonRdbmsWriter {
 
@@ -415,6 +415,7 @@ public class CommonRdbmsWriter {
                 int columnSqltype = this.resultSetMetaData.getMiddle().get(i);
                 String typeName = this.resultSetMetaData.getRight().get(i);
                 preparedStatement = fillPreparedStatementColumnType(preparedStatement, i, columnSqltype, typeName, record.getColumn(i));
+                System.out.println("写出SQL:  "+preparedStatement);
             }
 
             return preparedStatement;
